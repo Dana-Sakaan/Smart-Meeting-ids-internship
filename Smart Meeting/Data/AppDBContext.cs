@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Smart_Meeting.Models;
@@ -16,6 +17,7 @@ namespace Smart_Meeting.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<RoomFeatures> RoomFeatures { get; set; }
+        public DbSet<AvailableFeatures> AvailableFeatures { get; set; }
         public DbSet<Meeting> Meetings { get; set; }
         public DbSet<MinutesOfMeeting> MinutesOfMeetings { get; set; }
         public DbSet<Attendee> Attendees { get; set; }
@@ -79,6 +81,22 @@ namespace Smart_Meeting.Data
                 .HasOne(m => m.Meeting)
                 .WithOne(meeting => meeting.MinutesOfMeeting)
                 .HasForeignKey<MinutesOfMeeting>(m => m.MeetingID);
+           
+            //Many to many between room and features
+
+                modelBuilder.Entity<RoomFeatures>()
+                .HasKey(rf => new { rf.RoomID, rf.FeatureID });
+
+                modelBuilder.Entity<RoomFeatures>()
+                    .HasOne(rf => rf.Room)
+                    .WithMany(r => r.RoomFeatures)
+                .HasForeignKey(rf => rf.RoomID);
+
+                modelBuilder.Entity<RoomFeatures>()
+                    .HasOne(rf => rf.AvailableFeatures)
+                    .WithMany(f => f.RoomFeatures)
+                    .HasForeignKey(rf => rf.FeatureID);
+
         }
     }
 }

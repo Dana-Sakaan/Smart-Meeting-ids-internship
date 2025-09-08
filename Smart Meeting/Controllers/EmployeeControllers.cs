@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -22,12 +23,14 @@ namespace Smart_Meeting.Controllers
         private readonly UserManager<Employee> _userManager;
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
-        public EmployeeControllers(UserManager<Employee> userManager,AppDBContext context ,IMapper mapper, IConfiguration config)
+
+        public EmployeeControllers( UserManager<Employee> userManager,AppDBContext context ,IMapper mapper, IConfiguration config)
         {
             _context = context;
             _userManager = userManager;
             _mapper = mapper;
             _config = config;
+          
         }
 
         // GET: api/Employee
@@ -44,7 +47,7 @@ namespace Smart_Meeting.Controllers
         // GET: api/Employee/5
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<ActionResult<EmployeeDto>> GetEmployee(int id)
+        public async Task<ActionResult<EmployeeDto>> GetEmployee(string id)
         {
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
@@ -52,6 +55,36 @@ namespace Smart_Meeting.Controllers
             var dtoResult = _mapper.Map<EmployeeDto>(employee);
             return Ok(dtoResult);
         }
+
+        [HttpGet("jobs")]
+        [Authorize]
+        public async Task<ActionResult> GetJobs()
+        {
+            var jobs = await _context.Employees.Select(emp => emp.Job).Distinct().ToListAsync();
+            return Ok(jobs);
+        }
+
+        [HttpGet("filter")]
+        [Authorize]
+        public async Task<ActionResult<EmployeeDto>> FilteredEmployees(
+            [FromQuery] string searchTerm = null,
+            [FromQuery] string job = null)
+        {
+            IQueryable<Employee> query = _context.Employees;
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(emp=> emp.FirstName.ToLower().Contains(searchTerm.ToLower())
+                                   || emp.LastName.ToLower().Contains(searchTerm.ToLower()));
+            }
+            if (!string.IsNullOrEmpty(job))
+            {
+                query = query.Where(emp=> emp.Job.ToLower() ==  job.ToLower());
+            }
+            var employees = await query.ToListAsync();
+            var dtoResult = _mapper.Map<List<EmployeeDto>>(employees);
+            return Ok(dtoResult);
+        }
+
 
         // POST: api/Employee
         [Authorize(Policy = "AdminOnly")]//only admins can create new user and give him/her a role
@@ -76,7 +109,7 @@ namespace Smart_Meeting.Controllers
                 }
                 if (string.IsNullOrEmpty(employee.Role))
                 {
-                    return NotFound("r cannot be empty");
+                    return NotFound("role cannot be empty");
                 }
                 // Check if an employee with the same email already exists
 
@@ -135,14 +168,42 @@ namespace Smart_Meeting.Controllers
                 IsEssential = true
             });
 
-            return Ok(new { message = "Login successful" });
+            return Ok(new { message = "Login successful" , employee  });
 
+        }
+
+        [HttpPost("changepassword")]
+        [Authorize(Policy="OwnerOnly")]
+        public async Task<ActionResult> ChangePassword(ChangePasswordDto passData)
+        {
+            var employeeIdClaim = User.FindFirst("employee_id");
+            if (employeeIdClaim == null)
+            {
+                return BadRequest("employee_id claim missing");
+            }
+
+            var employee = await _userManager.FindByIdAsync(employeeIdClaim.Value);
+            if(employee == null)
+            {
+                return BadRequest("user not found");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(employee, passData.oldPassword, passData.newPassword);
+            if (result.Succeeded)
+            {
+                HttpContext.Response.Cookies.Delete("access_token");
+                return Ok("Password changed successfully");
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
         }
 
         // PUT: api/Employee/5
         [HttpPut("{id}")]
         [Authorize(Policy = "OwnerOnly")]
-        public async Task<IActionResult> UpdateEmployee(int id, EmployeeDto employee)
+        public async Task<IActionResult> UpdateEmployee(string id, EmployeeDto employee)
         {
             var ExistEmployee = await _context.Employees.FindAsync(id);
             if (ExistEmployee == null)
@@ -157,7 +218,7 @@ namespace Smart_Meeting.Controllers
         // DELETE: api/Employee/5
         [HttpDelete("{id}")]
         [Authorize(Policy = "AdminOnly")]
-        public async Task<IActionResult> DeleteEmployee(int id)
+        public async Task<IActionResult> DeleteEmployee(string id)
         {
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
@@ -167,6 +228,16 @@ namespace Smart_Meeting.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("logout")]
+        public async Task<ActionResult> Logout()
+        {
+            // Clear specific cookies
+            HttpContext.Response.Cookies.Delete("access_token");
+
+
+            return Ok(new { message = "Logged out successfully" });
         }
 
     }

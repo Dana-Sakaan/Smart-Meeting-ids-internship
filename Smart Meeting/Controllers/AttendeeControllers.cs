@@ -38,7 +38,7 @@ namespace Smart_Meeting.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> AddAttendee(int meetingID,AttendeeDto attendee)
+        public async Task<ActionResult> AddAttendee(int meetingID,AddAttendeeDto attendee)
         {
             var MeetingExist = await _context.Meetings.FindAsync(meetingID);
             if (MeetingExist == null) return NotFound();

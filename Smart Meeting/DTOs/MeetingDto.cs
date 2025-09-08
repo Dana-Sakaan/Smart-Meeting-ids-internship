@@ -1,22 +1,31 @@
 ﻿using Smart_Meeting.Models;
-using System.ComponentModel.DataAnnotations;
+
 
 namespace Smart_Meeting.DTOs
 {
     public class MeetingDto
     {
+        public int ID { get; set; }
         public string Title { get; set; } = string.Empty;
-        public string Agenda { get; set; } = string.Empty;
 
+        public string Description { get; set; } = string.Empty;
 
-        public DateTime Date { get; set; }
+        public DateOnly Date { get; set; }
 
-        public int RoomID { get; set; }
-
+        public TimeOnly Time { get; set; }
         public string EmployeeID { get; set; }
 
-        public MeetingStatus status { get; set; }
+        public int Duration { get; set; }
 
-        public List<Attendee> Attendees { get; set; } = new();
+        public TimeOnly EndTime { get; set; }
+
+        public string RoomName { get; set; }
+
+        public string status { get; set; }
+
+        public string CreaterFirstName { get; set; }
+        public string CreaterLastName { get; set; }
+
+       public string AuthorId { get; set; }
     }
 }

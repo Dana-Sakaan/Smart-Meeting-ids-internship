@@ -25,14 +25,14 @@ namespace Smart_Meeting.Controllers
 
         [HttpPost]
         [Authorize(Policy = "AdminOnly")]
-        public async Task<ActionResult<RoomDto>> AddRoom(RoomDto room)
+        public async Task<ActionResult<RoomDto>> AddRoom(CreateRoomDto room)
         {
             var RoomExist = await _context.Rooms.FirstOrDefaultAsync(r => r.RoomName == room.RoomName);
             if (RoomExist != null) return Conflict("Room already exists");
             var NewRoom = _mapper.Map<Room>(room);
             _context.Rooms.Add(NewRoom);
             await _context.SaveChangesAsync();
-            var dtoResult = _mapper.Map<RoomDto>(NewRoom);
+            var dtoResult = _mapper.Map<CreateRoomDto>(NewRoom);
             return CreatedAtAction(nameof(GetRoom), new { id = NewRoom.ID }, NewRoom);
         }
 
@@ -53,6 +53,34 @@ namespace Smart_Meeting.Controllers
             if (room == null) return NotFound();
             var dtoResult = _mapper.Map<RoomDto>(room);
             
+            return Ok(dtoResult);
+        }
+        [HttpGet("filter")]
+        [Authorize]
+        public async Task<ActionResult<RoomDto>> FilteredRooms(
+            [FromQuery] string searchTerm = null,
+            [FromQuery] string status = null,
+            [FromQuery] int capacity = 0)
+        {
+            IQueryable<Room> query = _context.Rooms;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower();
+                query = query.Where(room => room.RoomName.ToLower().Contains(searchTerm)
+                                  || room.Description.ToLower().Contains(searchTerm));
+            }
+            if (!string.IsNullOrEmpty(status))
+            {
+                var statusEnum = Enum.Parse<RoomStatus>(status, true);
+                query = query.Where(room => room.status == statusEnum);
+            }
+            if (capacity > 0) {
+                query = query.Where(room => room.Capacity >= capacity);
+            }
+
+            var rooms = await query.ToListAsync();
+            var dtoResult = _mapper.Map<List<RoomDto>>(rooms);
             return Ok(dtoResult);
         }
 

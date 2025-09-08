@@ -51,19 +51,19 @@ namespace Smart_Meeting.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "be001491-5af8-43a0-b0b3-231533436d08",
+                            Id = "9de75c33-d895-476a-bf71-ad68e353d152",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "10589dcb-b694-4041-909d-6b099c469fec",
+                            Id = "fbfdb894-5c70-475d-8db5-ea373257e965",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "922d7c71-dd77-47d6-b364-9d4b3e69c465",
+                            Id = "c8fb0168-6481-4fbc-8b7d-3fea24a9854a",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -193,6 +193,23 @@ namespace Smart_Meeting.Migrations
                     b.ToTable("Attendees");
                 });
 
+            modelBuilder.Entity("Smart_Meeting.Models.AvailableFeatures", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Feature")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("AvailableFeatures");
+                });
+
             modelBuilder.Entity("Smart_Meeting.Models.Employee", b =>
                 {
                     b.Property<string>("Id")
@@ -286,19 +303,28 @@ namespace Smart_Meeting.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Agenda")
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
 
                     b.Property<string>("EmployeeID")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time");
+
                     b.Property<int>("RoomID")
                         .HasColumnType("int");
+
+                    b.Property<TimeOnly>("Time")
+                        .HasColumnType("time");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -409,34 +435,18 @@ namespace Smart_Meeting.Migrations
 
             modelBuilder.Entity("Smart_Meeting.Models.RoomFeatures", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<bool>("HasCoffeMachine")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("HasProjector")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("HasVideoConferencing")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("HasWhiteBoard")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("HasWiFi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("RoomID")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.Property<int>("FeatureID")
+                        .HasColumnType("int");
 
-                    b.HasIndex("RoomID")
-                        .IsUnique();
+                    b.Property<int>("ID")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoomID", "FeatureID");
+
+                    b.HasIndex("FeatureID");
 
                     b.ToTable("RoomFeatures");
                 });
@@ -562,13 +572,26 @@ namespace Smart_Meeting.Migrations
 
             modelBuilder.Entity("Smart_Meeting.Models.RoomFeatures", b =>
                 {
-                    b.HasOne("Smart_Meeting.Models.Room", "Room")
-                        .WithOne("RoomFeatures")
-                        .HasForeignKey("Smart_Meeting.Models.RoomFeatures", "RoomID")
+                    b.HasOne("Smart_Meeting.Models.AvailableFeatures", "AvailableFeatures")
+                        .WithMany("RoomFeatures")
+                        .HasForeignKey("FeatureID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Smart_Meeting.Models.Room", "Room")
+                        .WithMany("RoomFeatures")
+                        .HasForeignKey("RoomID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AvailableFeatures");
+
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Smart_Meeting.Models.AvailableFeatures", b =>
+                {
+                    b.Navigation("RoomFeatures");
                 });
 
             modelBuilder.Entity("Smart_Meeting.Models.Employee", b =>
@@ -587,8 +610,7 @@ namespace Smart_Meeting.Migrations
 
             modelBuilder.Entity("Smart_Meeting.Models.Room", b =>
                 {
-                    b.Navigation("RoomFeatures")
-                        .IsRequired();
+                    b.Navigation("RoomFeatures");
                 });
 #pragma warning restore 612, 618
         }

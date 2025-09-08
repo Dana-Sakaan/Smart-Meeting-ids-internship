@@ -7,9 +7,13 @@ namespace Smart_Meeting.DTOs
 
         public string Title { get; set; } = string.Empty;
 
-        public string Agenda { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
 
-        public DateTime Date { get; set; }
+        public DateOnly Date { get; set; }
+
+        public TimeOnly Time { get; set; }
+
+        public int Duration { get; set; }
 
         public int RoomID { get; set; }
 

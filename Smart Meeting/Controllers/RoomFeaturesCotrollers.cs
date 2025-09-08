@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Smart_Meeting.Data;
@@ -22,55 +23,68 @@ namespace Smart_Meeting.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<ActionResult<RoomFeaturesDto>> GetRoomFeatures(int roomId)
-        {
-            var RoomExist = await _context.Rooms.FindAsync(roomId);
-            if(RoomExist == null) return NotFound();
-
-            var roomFeatures = await _context.RoomFeatures
-                .FirstOrDefaultAsync(rf => rf.RoomID == roomId);
-            var dtoResult = _mapper.Map<RoomFeaturesDto>(roomFeatures);
-            return Ok(dtoResult);
-        }
 
         [HttpPost]
         [Authorize(Policy = "AdminOnly")]
-        public async Task<ActionResult<RoomFeaturesDto>> AddRoomFeatures(int roomId,RoomFeaturesDto roomFeatures)
+        public async Task<IActionResult> AssignFeaturesToRoom(int roomId, AssignFeatureDto dto)
         {
-            var RoomExist = await _context.Rooms.FindAsync(roomId);
-            if (RoomExist == null) return NotFound();
+            var roomExists = await _context.Rooms.FirstOrDefaultAsync(r => r.ID == roomId);
+            if (roomExists == null)
+                return NotFound("Room not found.");
 
-            var FeaturesExist = await _context.RoomFeatures
-                .FirstOrDefaultAsync(rf => rf.RoomID == roomId);
-            if(FeaturesExist != null) return Conflict("Features are already added to this room");
-            
-            var features = _mapper.Map<RoomFeatures>(roomFeatures);
-            features.RoomID = roomId;
-            
-            _context.RoomFeatures.Add(features);
+            var validFeatureIds = await _context.AvailableFeatures
+                .Where(f => dto.FeatureIDs.Contains(f.ID))
+                .Select(f => f.ID)
+                .ToListAsync();
+
+            var roomFeatures = validFeatureIds.Select(fid => new RoomFeatures
+            {
+                RoomID = roomId,
+                FeatureID = fid
+            });
+
+            _context.RoomFeatures.AddRange(roomFeatures);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok("Features assigned successfully.");
         }
 
-        [HttpPut]
+
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<FeatureDto>>> GetFeaturesForRoom(int roomId)
+        {
+            var features = await _context.RoomFeatures
+                .Where(rf => rf.RoomID == roomId)
+                .Include(rf => rf.AvailableFeatures)
+                .Select(rf => new FeatureDto
+                {
+                    ID = rf.AvailableFeatures.ID,
+                    Feature = rf.AvailableFeatures.Feature
+                })
+                .ToListAsync();
+
+            return Ok(features);
+        }
+
+        [HttpDelete]
         [Authorize(Policy = "AdminOnly")]
-        public async Task<ActionResult<RoomFeaturesDto>> UpdateRoomFeatures(int roomId, RoomFeaturesDto roomFeatures) 
+        public async Task<IActionResult> RemoveFeatureFromRoom(int roomId, int featureId)
         {
-            var RoomExist = await _context.Rooms.FindAsync(roomId);
-            if (RoomExist == null) return NotFound();
+            var roomFeature = await _context.RoomFeatures
+                .FirstOrDefaultAsync(rf => rf.RoomID == roomId && rf.FeatureID == featureId);
 
-            var FeaturesExist = await _context.RoomFeatures
-                .FirstOrDefaultAsync(rf => rf.RoomID == roomId);
-            if (FeaturesExist == null) return NotFound();
+            if (roomFeature == null)
+                return NotFound("Feature not assigned to this room.");
 
-            _mapper.Map(roomFeatures, FeaturesExist);
+            _context.RoomFeatures.Remove(roomFeature);
             await _context.SaveChangesAsync();
-            return Ok();
 
+            return Ok("Feature removed from room.");
         }
+
+
+
 
     }
 }

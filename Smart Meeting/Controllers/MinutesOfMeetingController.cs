@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Smart_Meeting.Data;
@@ -20,12 +21,13 @@ namespace Smart_Meeting.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<MinutesOfMeetingDto>>> GetMOM(int meetingID)
         {
             var MeetingExist = await _context.Meetings.FindAsync(meetingID);
             if (MeetingExist == null) return NotFound();
 
-            var MinsMeeting = await _context.MinutesOfMeetings
+            var MinsMeeting = await _context.MinutesOfMeetings.Include(mm => mm.Author)
              .FirstOrDefaultAsync(M => M.MeetingID == meetingID);
             
 
@@ -34,40 +36,55 @@ namespace Smart_Meeting.Controllers
             return Ok(dtoResult);
         }
 
-
-        [HttpPost]
-        public async Task<ActionResult> AddMOM(int meetingID, MinutesOfMeetingDto MinMeeting)
+        [HttpPost("addauthor")]
+        [Authorize(Policy = "OwnerOnly")]
+        public async Task<ActionResult> AddAuthor(int meetingID,AddAuthorDto author)
         {
-            var MeetingExist = await _context.Meetings.FindAsync(meetingID);
-            if (MeetingExist == null) return NotFound();
+            var claimValue = User.FindFirst("employee_id")?.Value;
+            if (claimValue == null) return BadRequest();
+            
 
-            var MinOfMeetingExist = await _context.MinutesOfMeetings
-                  .FirstOrDefaultAsync(m => m.MeetingID == meetingID);
-            if (MinOfMeetingExist != null) return Conflict("Minutes of meeting are added");
+            var meeting = await _context.Meetings.FirstOrDefaultAsync(meeting=> meeting.ID == meetingID);
 
-            var newMinOfMeeting = _mapper.Map<MinutesOfMeeting>(MinMeeting);
-            newMinOfMeeting.MeetingID = meetingID;
-            _context.MinutesOfMeetings.Add(newMinOfMeeting);
+            if (meeting.EmployeeID != claimValue) return Forbid("You are not the creator of this meeting.");
+
+            var existingMinutes = await _context.MinutesOfMeetings
+       .FirstOrDefaultAsync(mom => mom.MeetingID == meetingID);
+
+            if (existingMinutes != null)
+            {
+                // Update the existing minutes entry with the new author
+                _mapper.Map(author, existingMinutes); // This maps properties from the DTO to the existing entity
+                _context.MinutesOfMeetings.Update(existingMinutes);
+            }
+            else
+            {
+                // Create a new minutes entry
+                var newMinutes = _mapper.Map<MinutesOfMeeting>(author);
+                // Ensure the foreign key is explicitly set
+                newMinutes.MeetingID = meetingID;
+                _context.MinutesOfMeetings.Add(newMinutes);
+            }
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok("author added");
         }
 
-
-        [HttpPut]
-        public async Task<ActionResult<RoomFeaturesDto>> UpdateMOM(int meetingID, MinutesOfMeetingDto MinMeeting)
+        [HttpPost("addsummary")]
+        [Authorize]
+        public async Task<ActionResult> AddMinutesSummary(int meetingID, AddSummaryDto MinSummary)
         {
-            var MeetingExist = await _context.Meetings.FindAsync(meetingID);
-            if (MeetingExist == null) return NotFound();
+            var claimValue = User.FindFirst("employee_id")?.Value;
+            if (claimValue == null) return BadRequest();
 
-            var MinOfMeetingExist = await _context.MinutesOfMeetings
-                 .FirstOrDefaultAsync(m => m.MeetingID == meetingID);
-            if (MinOfMeetingExist == null) return Conflict("Minutes of meeting are not added");
+            var minutesMeeting = await _context.MinutesOfMeetings.FirstOrDefaultAsync(mom => mom.MeetingID == meetingID);
 
+            if (minutesMeeting == null) { return NotFound(); }
 
-            _mapper.Map(MinMeeting, MinOfMeetingExist);
+            if (minutesMeeting.AuthorId != claimValue) return Forbid("You cant add summary to this meeting.");
+
+            _mapper.Map(MinSummary, minutesMeeting);
             await _context.SaveChangesAsync();
-            return Ok();
-
+            return Ok("summary added");
         }
 
     }

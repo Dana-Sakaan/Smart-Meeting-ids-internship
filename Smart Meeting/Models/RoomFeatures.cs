@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AutoMapper.Features;
+using System.ComponentModel.DataAnnotations;
 
 namespace Smart_Meeting.Models
 {
@@ -6,20 +7,11 @@ namespace Smart_Meeting.Models
     {
         [Key]
         public int ID { get; set; }
-        [Required]
-        public bool HasProjector { get; set; }
-        [Required]
-        public bool HasWhiteBoard { get; set; }
-        [Required]
-        public bool HasVideoConferencing { get; set; }
-        [Required]
-        public bool HasWiFi { get; set; }  
-        [Required]
-        public bool HasCoffeMachine { get; set; }
-        [Required]
         public int RoomID { get; set; }
+        public Room Room { get; set; }
 
-        [Required]
-        public required Room Room { get; set; }
+        public int FeatureID { get; set; }
+        public AvailableFeatures AvailableFeatures { get; set; }
+
     }
 }

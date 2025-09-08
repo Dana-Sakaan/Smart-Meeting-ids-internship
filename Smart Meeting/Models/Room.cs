@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http.Features;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -7,7 +8,7 @@ namespace Smart_Meeting.Models
     public enum RoomStatus
     {
         Available,
-        Occupied
+        UnderMaintenance
     }
 
     public class Room
@@ -15,7 +16,7 @@ namespace Smart_Meeting.Models
         [Key]
         public int ID { get; set; }
 
-        [Required(ErrorMessage = "Please write room name…")]
+        [Required]
         public string RoomName { get; set; } = string.Empty;
 
         [Required]
@@ -28,10 +29,10 @@ namespace Smart_Meeting.Models
 
         [Required]
         public int Capacity { get; set; }
-        [Required]
+
         public RoomStatus status { get; set; } = RoomStatus.Available;
 
-        [Required]
-        public required RoomFeatures RoomFeatures { get; set; }
+        public ICollection<RoomFeatures> RoomFeatures { get; set; }
+
     }
 }

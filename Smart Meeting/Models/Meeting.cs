@@ -7,21 +7,31 @@ namespace Smart_Meeting.Models
     {
         Upcoming,
         Inprogress,
-        Completed
+        Completed,
+        Canceled
     }
     public class Meeting
     {
         [Key]
         public int ID { get; set; }
 
-        [Required(ErrorMessage = "Please write room name…")]
+        [Required]
         public string Title { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Please write room agenda…")]
-        public string Agenda { get; set; } = string.Empty;
+        [Required]
+        public string Description { get; set; } = string.Empty;
 
         [Required]
-        public DateTime Date { get; set; }
+        public DateOnly Date { get; set; }
+
+        [Required]
+        public TimeOnly Time { get; set; }
+
+        [Required]
+        public int Duration { get; set; }
+
+
+        public TimeOnly EndTime { get; set; }
 
         [Required]
         public MeetingStatus status { get; set; } = MeetingStatus.Upcoming;

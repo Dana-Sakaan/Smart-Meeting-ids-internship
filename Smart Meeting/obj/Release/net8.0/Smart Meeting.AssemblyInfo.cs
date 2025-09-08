@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Smart Meeting")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+27c6770e4bb05805cba92f1546669f362307ed0f")]
 [assembly: System.Reflection.AssemblyProductAttribute("Smart Meeting")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Smart Meeting")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

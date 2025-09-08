@@ -16,9 +16,10 @@ namespace Smart_Meeting.JWT
 
             var claims = new[]
             {
-            new Claim("employee_id", emp.Id.ToString())
+            new Claim("employee_id", emp.Id.ToString()),
+            new Claim(ClaimTypes.Role, emp.Role)
 
-        };
+            };
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 

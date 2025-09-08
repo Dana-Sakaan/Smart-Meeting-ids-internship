@@ -26,13 +26,16 @@ namespace Smart_Meeting
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddAutoMapper(typeof(Smart_Meeting.DTOs.AutoMapper));
+            builder.Services.AddHostedService<MeetingStatusBackgroundService>();
             // Configure CORS
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("ReactPolicy",
-                    builder => builder.AllowAnyOrigin() // React app port
+                    builder => builder.WithOrigins("http://localhost:5173") // React app port
                                      .AllowAnyMethod()
-                                     .AllowAnyHeader());
+                                     .AllowAnyHeader()
+                                     .AllowCredentials()
+                                     );
             });
 
 
@@ -82,11 +85,17 @@ namespace Smart_Meeting
             {
                 //checking ownership of resources
                 options.AddPolicy("OwnerOnly", policy =>
-                    policy.RequireClaim(ClaimTypes.NameIdentifier));
+                    policy.RequireClaim("employee_id"));
 
                 //Restrict access to admin-only routes 
                 options.AddPolicy("AdminOnly", policy =>
                     policy.RequireRole("Admin"));
+
+                //Owner only and also let admin have access
+                options.AddPolicy("OwnerOrAdmin", policy =>
+                    policy.RequireAssertion(context =>
+                    context.User.HasClaim(c => c.Type == "employee_id") ||
+                    context.User.IsInRole("Admin")));
 
                 //Let employees access a resource, but also allow admins to
                 options.AddPolicy("EmployeeOrAdmin", policy =>
