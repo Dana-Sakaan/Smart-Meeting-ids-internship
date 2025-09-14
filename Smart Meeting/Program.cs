@@ -31,7 +31,7 @@ namespace Smart_Meeting
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("ReactPolicy",
-                    builder => builder.WithOrigins("http://localhost:5173") // React app port
+                    builder => builder.WithOrigins("https://smart-meeting-ids-internship-frontend-9jnu.onrender.com") // React app port
                                      .AllowAnyMethod()
                                      .AllowAnyHeader()
                                      .AllowCredentials()
@@ -40,7 +40,7 @@ namespace Smart_Meeting
 
 
             builder.Services.AddDbContext<AppDBContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddIdentity<Employee,IdentityRole>(options =>
             {

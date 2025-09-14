@@ -153,8 +153,8 @@ C:\Users\User\Desktop\IDS-Internship-program-KD\Smart Meeting\Smart Meeting\bin\
 C:\Users\User\Desktop\IDS-Internship-program-KD\Smart Meeting\Smart Meeting\bin\Debug\net8.0\AutoMapper.dll
 C:\Users\User\Desktop\IDS-Internship-program-KD\Smart Meeting\Smart Meeting\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\appsettings.Development.json
-C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Smart Meeting.staticwebassets.runtime.json
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\appsettings.json
+C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Smart Meeting.staticwebassets.runtime.json
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Smart Meeting.exe
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Smart Meeting.deps.json
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Smart Meeting.runtimeconfig.json
@@ -164,7 +164,9 @@ C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\AutoMapper.dl
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Azure.Identity.dll
+C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Humanizer.dll
+C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\MailKit.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
@@ -202,6 +204,7 @@ C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Microsoft.Ide
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Microsoft.OpenApi.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\MimeKit.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Mono.TextTemplating.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
@@ -218,6 +221,7 @@ C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\System.Drawin
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\System.Memory.Data.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\System.Runtime.Caching.dll
+C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\System.Security.Permissions.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\System.Windows.Extensions.dll
@@ -283,6 +287,7 @@ C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\runtimes\win\
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Debug\net8.0\Smart Meeting.csproj.AssemblyReference.cache
@@ -292,6 +297,7 @@ C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Debug\net8.0\Smart Meeting
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Debug\net8.0\Smart Meeting.csproj.CoreCompileInputs.cache
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Debug\net8.0\Smart Meeting.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Debug\net8.0\Smart Meeting.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Debug\net8.0\Smart Meeting.sourcelink.json
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Debug\net8.0\staticwebassets\msbuild.Smart Meeting.Microsoft.AspNetCore.StaticWebAssets.props
@@ -306,9 +312,3 @@ C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Debug\net8.0\refint\Smart 
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Debug\net8.0\Smart Meeting.pdb
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Debug\net8.0\Smart Meeting.genruntimeconfig.cache
 C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Debug\net8.0\ref\Smart Meeting.dll
-C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Debug\net8.0\Smart Meeting.sourcelink.json
-C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
-C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\MailKit.dll
-C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\MimeKit.dll
-C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
-C:\Users\User\Desktop\Smart Meeting\Smart Meeting\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll

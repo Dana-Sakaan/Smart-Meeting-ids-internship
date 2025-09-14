@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAaTPQHAxn40+n8CyNySQLOAAAAAACAAAAAAAQZgAAAAEAACAAAAD5rl3mo9Yoay1DJWefU1tIeTojmoGtFmOWIT7MrhtVjwAAAAAOgAAAAAIAACAAAAAdMkcWrnCEh8/iFSzceMGBe7btBGqZnnAmVgWWk0LfDoAAAACdWZKiVGu+tEduMPrPcn9DgCb1HV35TU8HnISw5CI1xljQvzh5uz+OaQw6nTR9bGG0BL5grfSVwjh8JkrlaUtsMBsmoJGNqlO23aiY/lyXoCKuG/o9EEsss+oBkB6ki+t8MntqSz4LVhV8+uQWmKw+UMvPiNoOnT9D5p+rhw/jTEAAAACXUSsO5ehZjX3mdFMNtN9qsBGydXxeYxRJKEblfQ8t08Px/oXdhMK11vXwn4jxuWfXWn9L6mXKA8Tgn3b+F+Rj</EncryptedPassword>
+    <History>True|2025-09-13T20:42:05.5293394Z||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <EFMigrations Include="Smart_Meeting.Data.AppDBContext">
+      <Value>Data Source=smartmeeting4-dbserver.database.windows.net,1433%3bInitial Catalog="Smart Meeting_db"%3bUser ID=Dana%3bPassword=SaKaan123!</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

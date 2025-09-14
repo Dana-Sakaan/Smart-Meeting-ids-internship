@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sitemanifest>
+  <IisApp path="C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Release\net8.0\PubTmp\Out\" />
+  <dbfullsql path="C:\Users\User\Desktop\Smart Meeting\Smart Meeting\obj\Release\net8.0\PubTmp\EFSQLScripts\Smart_Meeting.Data.AppDBContext.sql" />
+</sitemanifest>

@@ -163,7 +163,7 @@ namespace Smart_Meeting.Controllers
             {
                 HttpOnly = true,
                 Secure = true,   // Only over HTTPS
-                SameSite = SameSiteMode.Strict, //CSRF protection
+                SameSite = SameSiteMode.None,
                 Expires = DateTimeOffset.UtcNow.AddDays(5),
                 IsEssential = true
             });
