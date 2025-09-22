@@ -35,7 +35,7 @@ namespace Smart_Meeting.Controllers
 
         // GET: api/Employee
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetEmployees()
         {
             var employees =await _context.Employees.ToListAsync();
@@ -159,14 +159,15 @@ namespace Smart_Meeting.Controllers
 
             var token = GenerateJWT.GenerateJwtToken(employee, _config);
 
-            Response.Cookies.Append("access_token", token, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,   // Only over HTTPS
-                SameSite = SameSiteMode.None,
-                Expires = DateTimeOffset.UtcNow.AddDays(5),
-                IsEssential = true
-            });
+                Response.Cookies.Append("access_token", token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,   // Only over HTTPS
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTimeOffset.UtcNow.AddDays(5),
+                    IsEssential = true,
+                    Path = "/"
+                });
 
             return Ok(new { message = "Login successful" , employee  });
 

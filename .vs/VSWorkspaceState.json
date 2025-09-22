@@ -2,7 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\Smart Meeting",
-    "\\Smart Meeting\\Controllers"
+    "\\Smart Meeting\\Controllers",
+    "\\Smart Meeting\\DTOs",
+    "\\Smart Meeting\\JWT"
   ],
   "SelectedNode": "\\Smart Meeting.sln",
   "PreviewInSolutionExplorer": false

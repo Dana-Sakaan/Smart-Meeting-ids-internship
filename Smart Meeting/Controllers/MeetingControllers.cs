@@ -55,7 +55,7 @@ namespace Smart_Meeting.Controllers
 
         }
 
-        [HttpGet("employeemeetings/{id}")] //at a specific date
+        [HttpGet("employeemeetings/{id}")] //employee meetingsat a specific date
         [Authorize(Policy = "EmployeeOrAdmin")] 
         public async Task<ActionResult<IEnumerable<MeetingDto>>> GetEmpMeetings(string id, DateOnly date)
         {
@@ -72,13 +72,13 @@ namespace Smart_Meeting.Controllers
 
         } 
 
-        [HttpGet("employeeallmeetings/{id}")] //all meetings
+        [HttpGet("employeeallmeetings/{id}")] //all employee meetings
         [Authorize(Policy = "EmployeeOrAdmin")] 
         public async Task<ActionResult<IEnumerable<MeetingDto>>> GetAllEmpMeetings(string id)
         {
             var EmpMeetings = await _context.Meetings
                               .Where(meeting => (meeting.EmployeeID == id || 
-                                    meeting.Attendees.Any(a => a.EmployeeID == id)))  
+                                    meeting.Attendees.Any(a => a.EmployeeID == id)) && meeting.status != MeetingStatus.Completed)  
                               .Include(meeting => meeting.Room)
                               .Include(meeting => meeting.Employee)
                               .Include(meeting=> meeting.Attendees)
@@ -95,12 +95,14 @@ namespace Smart_Meeting.Controllers
             var endTime = time.AddMinutes(duration);
 
             var availableRooms = await _context.Rooms
-                .Where(room => !_context.Meetings
-                    .Any(m => m.Date == date &&
-                             m.RoomID == room.ID &&
-                             time < m.Time.AddMinutes(m.Duration) &&
-                             endTime > m.Time))
-                .ToListAsync();
+                    .Where(room => room.status != RoomStatus.UnderMaintenance &&
+                    !   _context.Meetings
+                        .Any(m => m.status != MeetingStatus.Canceled &&
+                                  m.Date == date &&
+                                  m.RoomID == room.ID &&
+                                  time < m.Time.AddMinutes(m.Duration) &&
+                                  endTime > m.Time))
+                    .ToListAsync();
 
             var dtoResult = _mapper.Map<List<RoomDto>>(availableRooms);
             return Ok(dtoResult);
@@ -121,16 +123,16 @@ namespace Smart_Meeting.Controllers
                 return Unauthorized("Employee ID claim not found");
             }
 
-            // Get all employees who are NOT busy in any meeting at the requested time
             var availableEmployees = await _context.Employees
-                .Where(employee => employee.Id != currentUserId && // Now comparing string to string
-                    !_context.Meetings
-                    .Any(m => m.Date == date &&
-                        (m.EmployeeID == employee.Id || // Meeting creator
-                         m.Attendees.Any(a => a.EmployeeID == employee.Id)) && // Attendee
-                        time < m.EndTime &&
-                        endTime > m.Time))
-                .ToListAsync();
+    .Where(employee => employee.Id != currentUserId &&
+        !_context.Meetings
+        .Any(m => m.status != MeetingStatus.Canceled && // Changed from Completed to Canceled
+                 m.Date == date &&
+                 (m.EmployeeID == employee.Id || // Meeting creator
+                  m.Attendees.Any(a => a.EmployeeID == employee.Id)) && // Attendee
+                 time < m.EndTime &&
+                 endTime > m.Time))
+    .ToListAsync();
 
             var dtoResult = _mapper.Map<List<EmployeeDto>>(availableEmployees);
             return Ok(dtoResult);
@@ -276,23 +278,23 @@ namespace Smart_Meeting.Controllers
         public async Task<ActionResult> CancelMeeting(int id)
         {
             var claimValue = User.FindFirst("employee_id")?.Value;
-            if (claimValue == null) return Forbid();
+            if (claimValue == null) return Forbid("UnAuthorized");
 
             var meeting = await _context.Meetings.FindAsync(id);
-            if(meeting == null) return NotFound();
+            if(meeting == null) return NotFound("Meeting not found");
 
             var employee = await _context.Employees.FindAsync(claimValue);
-            if(employee == null) return NotFound();
+            if(employee == null) return NotFound("Employee not found");
 
             if(meeting.EmployeeID == claimValue || employee.Role == "Admin")
             {
                 meeting.status = MeetingStatus.Canceled;
                 await _context.SaveChangesAsync();
-                return Ok();
+                return Ok("Meeting canceled");
             }
             else
             {
-                return Forbid();
+                return Forbid("UnAuthorized");
             }
         }
     }

@@ -1,7 +1,16 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\Smart Meeting\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9A816518-E435-40A8-A38A-CD499D363C5C}|Smart Meeting\\Smart Meeting.csproj|c:\\users\\user\\desktop\\smart meeting\\smart meeting\\controllers\\meetingcontrollers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9A816518-E435-40A8-A38A-CD499D363C5C}|Smart Meeting\\Smart Meeting.csproj|solutionrelative:smart meeting\\controllers\\meetingcontrollers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9A816518-E435-40A8-A38A-CD499D363C5C}|Smart Meeting\\Smart Meeting.csproj|c:\\users\\user\\desktop\\smart meeting\\smart meeting\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9A816518-E435-40A8-A38A-CD499D363C5C}|Smart Meeting\\Smart Meeting.csproj|solutionrelative:smart meeting\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,15 +18,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\Smart Meeting\\Smart Meeting\\Program.cs",
+              "RelativeDocumentMoniker": "Smart Meeting\\Program.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\Smart Meeting\\Smart Meeting\\Program.cs",
+              "RelativeToolTip": "Smart Meeting\\Program.cs",
+              "ViewState": "AQIAACkAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-16T06:23:53.149Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MeetingControllers.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\Smart Meeting\\Smart Meeting\\Controllers\\MeetingControllers.cs",
+              "RelativeDocumentMoniker": "Smart Meeting\\Controllers\\MeetingControllers.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\Smart Meeting\\Smart Meeting\\Controllers\\MeetingControllers.cs",
+              "RelativeToolTip": "Smart Meeting\\Controllers\\MeetingControllers.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAIcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-15T10:54:35.106Z",
+              "EditorCaption": ""
             }
           ]
         }

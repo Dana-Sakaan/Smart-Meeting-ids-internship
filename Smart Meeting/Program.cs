@@ -27,15 +27,17 @@ namespace Smart_Meeting
             builder.Services.AddSwaggerGen();
             builder.Services.AddAutoMapper(typeof(Smart_Meeting.DTOs.AutoMapper));
             builder.Services.AddHostedService<MeetingStatusBackgroundService>();
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            });
+
             // Configure CORS
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("ReactPolicy",
-                    builder => builder.WithOrigins("https://smart-meeting-ids-internship-frontend-9jnu.onrender.com") // React app port
-                                     .AllowAnyMethod()
-                                     .AllowAnyHeader()
-                                     .AllowCredentials()
-                                     );
+                    builder => builder.WithOrigins("https://smart-meeting-ids-internship-frontend-9jnu.onrender.com").AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             });
 
 
@@ -135,9 +137,9 @@ namespace Smart_Meeting
 
             app.UseRouting();
             app.UseCors("ReactPolicy");
-            app.UseHttpsRedirection();
             app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthorization();            
+            app.UseHttpsRedirection();
             app.MapControllers();
 
 
